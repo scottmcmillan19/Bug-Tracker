@@ -1,0 +1,362 @@
+.BugPreview {
+    margin: 3em;
+    margin-left: 23em;
+    border: 1px solid black;
+    width: 500px;
+    text-align: center;
+    font-family: 'Times New Roman';
+
+    .bug-name {
+      border-bottom: 1px solid black;
+      padding: 0.25em 0.5em;
+      font-weight: bold;
+      background-color: #c5d1fb;
+      color: black;
+    }
+  
+    .bug-description {
+      padding: 0.5em;
+      background-color: white;
+    }
+}
+
+.ClosedBugPreview {
+  margin: 3em;
+  margin-left: 23em;
+  border: 1px solid black;
+  width: 500px;
+  text-align: center;
+  font-family: 'Times New Roman';
+
+  .bug-name {
+    border-bottom: 1px solid black;
+    padding: 0.25em 0.5em;
+    font-weight: bold;
+    background-color: #ff5d5d;
+    color: black;
+  }
+
+  .bug-description {
+    padding: 0.5em;
+    background-color: white;
+  }
+}
+
+.InProgressBugPreview {
+  margin: 3em;
+  margin-left: 23em;
+  border: 1px solid black;
+  width: 500px;
+  text-align: center;
+  font-family: 'Times New Roman';
+
+  .bug-name {
+    border-bottom: 1px solid black;
+    padding: 0.25em 0.5em;
+    font-weight: bold;
+    background-color: #5dff86;
+    color: black;
+  }
+
+  .bug-description {
+    padding: 0.5em;
+    background-color: white;
+  }
+}
+
+  .link {
+    cursor: pointer;
+  }
+
+  .home-link {
+    margin-top: 1em;
+    color: #0000ee;
+  }
+
+  .createNewBug {
+    margin-left: 10px;
+    font-family: times-new-roman;
+    background-color: #181717;
+    color: white;
+    width: 150px;
+    height: 50px;
+  }
+
+  .titleOfPage {
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  .ul_navbar {
+    background-color: #1a1a1a;
+    padding: 10px;
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+    margin-bottom:50px;
+    li {
+    display:inline;
+    margin: 50px;
+    color: white;
+    cursor: pointer;
+    }
+    li:hover {
+      color: pink;
+    }
+    a {
+      color:white;
+    }
+    a:hover {
+      color: #e6e9fd;
+      text-decoration:none;
+    }
+    a:focus {
+      text-decoration:none;
+    }
+  }
+
+  .background {
+    background-color: #e6e9fd;
+  }
+
+  .title {
+    text-align:center;
+    color:black;
+    font-family:'Times New Roman', Times, serif;
+    font-size:30px
+  }
+
+  .label {
+    display: block;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 17px;
+    margin-left: 0px;
+  }
+
+  .input {
+    font-family: 'Times New Roman', Times, serif;
+    margin-left: 475px;
+    margin-top:10px;
+    margin-bottom: 30px;
+  }
+
+  .button {
+    margin-left: 492px;
+    width: 150px;
+    height: 50px;
+    color:white;
+    background-color:#1a1a1a;
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  .bugListTitle {
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    margin-left: 515px;
+  }
+
+ .bugTable {
+   table {
+     
+     margin-left: auto;
+     margin-top: 100px;
+     margin-right: auto;
+     margin-bottom: auto;
+     border: 1px solid black;
+     border-collapse: collapse;
+     font-family: 'Times New Roman', Times, serif;
+     font-size: 20px;
+     overflow-wrap: normal;
+   }
+   tr {
+     border: 1.5px solid black;
+     padding: 3px;
+   }
+   td {
+     border: 1.5px solid black;
+     padding: 5px;
+   }
+   th {
+     border: 1.5px solid black;
+     padding: 5px;
+     background-color: #c5d1fb;
+   }
+ }
+
+ .homeParagraph {
+   text-align: center;
+   font-family: 'Times New Roman', Times, serif;
+   font-size: 15px;
+ }
+
+ .registerTitle {
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 30px;
+}
+
+.bugCreated {
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20px;
+}
+
+ .register {
+   padding: 1rem;
+   form {
+     margin-left: 450px;
+   }
+   input {
+     border-radius: .3em;
+     border: 1px solid black;
+     margin: 15px;
+   }
+   label {
+     margin: 5px;
+   }
+ }
+
+ .login {
+   form {
+     margin-left: 450px;
+   }
+   input {
+    border-radius: .3em;
+    border: 1px solid black;
+    margin: 15px;
+   }
+   
+ }
+
+ .bugKinds {
+   margin-top: 3em;
+   margin-left: 25em;
+   li {
+    display: inline;
+    margin: 1em;
+   }
+   a {
+     text-decoration: none;
+     color: black;
+     padding: .5em;
+     font-family: 'Times New Roman', Times, serif;
+   }
+   a:hover {
+     background-color: white;
+   }
+   
+ }
+
+ .yesNo {
+   margin: 1em;
+   width: 4em;
+   background-color: #c5d1fb;
+   border: 1px solid black;
+ }
+
+ .yesNo:active {
+   background-color: #e6e9fd;
+   
+ }
+
+ .editButton {
+   font-family: 'Times New Roman', Times, serif;
+   margin: 1em;
+   width: 8em;
+   height: 2em;
+   background-color: #c5d1fb;
+   border: 1px solid black;
+   margin-left: 515px;
+ }
+
+ .editButton:active {
+  background-color: #e6e9fd;
+ }
+
+ .select {
+   width: 180px;
+   margin-left: 475px;
+   height: 25px;
+   margin-bottom: 20px;
+   font-family: 'Times New Roman', Times, serif;
+ }
+
+ .finishButton {
+  font-family: 'Times New Roman', Times, serif;
+  
+  margin: 1em;
+  width: 8em;
+  background-color: #ff5d5d;
+  border: 1px solid black;
+  margin-left: 525px;
+}
+
+.finishButton:active {
+ background-color: #e6e9fd;
+}
+
+.bugTitle {
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.bug {
+  display: flex;
+  justify-content: space-between;
+}
+
+.loginErr {
+  text-align: center;
+  color: red;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.bugHeaders {
+  color: black;
+  font-weight: bold;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 17px;
+}
+
+.bugTables {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 15px;
+  caption {
+    margin-left: 7px;
+  }
+  th {
+    vertical-align: top;
+    max-width: 10em;
+    padding: .5em;
+  }
+  td {
+    vertical-align: top;
+    max-width: 15em;
+    padding: .5em;
+  }
+}
+
+.editBtn {
+  background-color: #e6e9fd;
+  border: none;
+}
+
+.doneEditing {
+  background-color: #c5d1fb;
+  border: 1px solid black;
+}
+
+
+
+
+
+
+
+ 
+
+  
+
+ 
+
+  
+
+ 

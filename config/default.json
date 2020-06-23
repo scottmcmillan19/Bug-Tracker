@@ -1,0 +1,5 @@
+{
+    "mongodbUri": "mongodb+srv://scottmcmillan19:Arutha1234@cluster0-m0odi.gcp.mongodb.net/Cluster0?retryWrites=true&w=majority",
+    "jwtSecret": "bt_myJwtSecret"
+
+}
