@@ -6,8 +6,7 @@
   "scripts": {
     
     "start": "nodemon --exec babel-node server.js --ignore public/",
-    "dev": "webpack -wd",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build"
+    "dev": "webpack -wd"
   },
   "repository": {
     "type": "git",
