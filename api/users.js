@@ -62,7 +62,7 @@ router.post('/', (req, res) => {
       })
 })
 
-router.get('/', auth, (req, res) => {
+router.get('/', (req, res) => {
     User.find({})
         .then(users => res.send(users))
 })
