@@ -18,7 +18,7 @@ export default function Hook() {
             {headers: {"x-auth-token": token}})
                 .then(tokenRes => {
                     if (tokenRes.data) {
-                        axios.get("http://localhost:8080/api/auth/user", {headers: {"x-auth-token": token}})
+                        axios.get("/api/auth/user", {headers: {"x-auth-token": token}})
                             .then(user => {
                                 setUserData({
                                     token,
