@@ -14,7 +14,7 @@ export default function Hook() {
                 localStorage.setItem("auth-token", "");
                 token = "";
             }
-            axios.post("http://localhost:8080/api/auth/tokenIsValid", null,
+            axios.post("/api/auth/tokenIsValid", null,
             {headers: {"x-auth-token": token}})
                 .then(tokenRes => {
                     if (tokenRes.data) {

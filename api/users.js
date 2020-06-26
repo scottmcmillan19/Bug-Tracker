@@ -62,7 +62,7 @@ router.post('/', (req, res) => {
       })
 })
 
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
     User.find({})
         .then(users => res.send(users))
         .catch(console.log('cant find ittt'))
