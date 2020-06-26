@@ -33,7 +33,7 @@ server.get(['/', '/bug/:bugId', '/createNewData', '/bugs', '/register', '/login'
    res.render('index');
 });
 const db = config.get('mongodbUri');
-mongoose.connect(process.env.MONGODB_URI || db, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
+mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
 
 server.use('/api', apiRouter);
 server.use('/api/users', userRouter);
