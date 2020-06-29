@@ -31,7 +31,7 @@ class TaskList extends Component {
         </div>
     )
     }
-    else if (token === ''){
+    else if (token === '') {
       return <div>
         You need to be logged in to see the task list.
         <Link to="/login"> Log in</Link>

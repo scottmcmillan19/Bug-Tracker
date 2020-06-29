@@ -4,14 +4,10 @@ import taskRouter from './api/task';
 import sassMiddleware from 'node-sass-middleware';
 import path from 'path';
 import express from 'express';
-import bodyParser from 'body-parser';
-//import CreateNewBug from './src/components/CreateNewBug';
-import React from 'react';
-import { reset } from 'nodemon';
-import createNewBugRender from './createNewBugRender';
 import userRouter from './api/users';
 import authRouter from './api/auth';
 import mongoose from 'mongoose';
+
 const env = process.env;
 // starting the server
 const server = express();
@@ -26,12 +22,13 @@ server.use(sassMiddleware({
 
 server.set('view engine', 'ejs');
 
-// request to the home page or a specific bug page
+// request to the home page or a specific bug or task page
 server.get(['/', '/bug/:bugId', '/createNewData', '/bugs', '/register', '/login', '/bugs/myCreatedBugs', '/bugs/myAssignedBugs',
 '/bug/edit/:bugId', '/bugs/edit/deleted', '/bugs/edit/updated', '/tasks', '/task/:taskId', '/tasks/myAssignedTasks', '/tasks/myCreatedTasks', '/createNewData/created', '/tasks/finished'
 , '/bugs/finished', '/tasks/edit/updated', '/tasks/edit/updated', '/task/edit/:taskId'], (req, res) => {
    res.render('index');
 });
+
 const db = config.get('mongodbUri');
 mongoose.connect(process.env.MONGODB_URI || db, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
 

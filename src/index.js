@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Link, Switch } from 'react-router-dom';
-import App from './components/App';
+import { Router, Route } from 'react-router-dom';
 import history from './history';
-import UserContext from './context/UserContext';
 import Hook from './components/Hook';
 
-
+// starting the client-side rendering
 ReactDOM.render(
   <Router history={history}>
       <Route path="/" component={Hook} />

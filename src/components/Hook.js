@@ -1,5 +1,4 @@
-import React, {useState, Component, useEffect, useContext} from 'react';
-import UserContext from '../context/UserContext';
+import React, {useState, useEffect } from 'react';
 import App from './App';
 import axios from 'axios';
 export default function Hook() {

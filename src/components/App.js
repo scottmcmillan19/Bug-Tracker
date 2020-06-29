@@ -1,17 +1,14 @@
-import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types';
-import Header from './Header';
+import React from 'react';
 import BugList from './BugList';
 import Bug from './Bug';
 import * as api from '../api';
 import CreateNewData from './CreateNewData';
 import axios from 'axios';
-import { Router, Route, Link, Switch } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import UserContext from '../context/UserContext';
-import Logout from './Logout';
 import MyCreatedBugs from './MyCreatedBugs';
 import MyAssignedBugs from './MyAssignedBugs';
 import EditBug from './EditBug';
@@ -27,6 +24,7 @@ import DeletedTask from './DeletedTask';
 import UpdatedTask from './UpdatedTask';
 import FinishedBug from './FinishedBug';
 import FinishedTask from './FinishedTask';
+
 class App extends React.Component {
 
   constructor(props) {
@@ -38,6 +36,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    // fetching the bugs and sorting them by status
     api.fetchBugList().then(res => {
       res.sort((a, b) => 
             ((a.status === "Open" && b.status === "In Progress") || (a.status === "Open" && b.status === "Closed") ||
@@ -53,6 +52,7 @@ class App extends React.Component {
     let token = localStorage.getItem("auth-token");
     axios.get('/api/tasks', {headers: {"x-auth-token": token}})
       .then(res => {
+        // fetching task list and sorting by status
         res.data.sort((a, b) => 
             ((a.status === "Open" && b.status === "In Progress") || (a.status === "Open" && b.status === "Closed") ||
             (a.status === "In Progress" && b.status === "Closed")) ? -1 :
@@ -65,8 +65,8 @@ class App extends React.Component {
       })
   }
 
+  // on logout, set token to null
   logout = () => {
-    var userData = this.props.userData;
     var setUserData = this.props.setUserData;
     setUserData({
       token: undefined,
