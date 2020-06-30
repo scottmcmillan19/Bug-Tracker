@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import UserContext from '../context/UserContext';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 export default function Login() {
     const [email, setEmail] = useState();
@@ -9,9 +9,11 @@ export default function Login() {
     const [err, setErr] = useState(false);
     const { setUserData } = useContext(UserContext);
     const history = useHistory();
+
     const submit = (e) => {
         e.preventDefault();
         const loginUser = { email, password };
+        // authenticate the user
         axios.post('/api/auth', loginUser)
             .then(loginRes => {
                 setUserData({
@@ -26,7 +28,9 @@ export default function Login() {
                 setErr(true)
             });
     };
+
     return (
+        // form for login
         <div className="login">
             <h2 className="registerTitle">Login</h2>
             {err ? <div className="loginErr">You need to enter proper credentials</div> : null}

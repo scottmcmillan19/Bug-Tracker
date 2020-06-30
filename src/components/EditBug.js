@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {FaTrashAlt} from "react-icons/fa";
 
 class EditBug extends Component {
@@ -18,6 +16,7 @@ class EditBug extends Component {
 
     constructor() {
         super();
+        // make functions accessible from "this"
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -25,7 +24,6 @@ class EditBug extends Component {
         this.handlePriorityChange = this.handlePriorityChange.bind(this);
         this.handleStatusChange = this.handleStatusChange.bind(this);
         this.handleReproduceChange = this.handleReproduceChange.bind(this);
-        //this.handleReporterChange = this.handleReporterChange.bind(this);
     }
 
     state = {
@@ -48,6 +46,7 @@ class EditBug extends Component {
             })
     }
 
+    // store the new values of the fields with each edit function
     handleTitleChange = (event) => {
         var date = new Date();
         var currDate = date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear();
@@ -96,6 +95,7 @@ class EditBug extends Component {
             if (this.state.users != null) {
                 return (
                     <div>
+                        {/* form for editing the bug and changing the values of fields */}
                         <form onSubmit={this.handleSubmit} id="editBug">
                             <label className="label" htmlFor="editBug">Title</label>
                             <input onChange={this.handleTitleChange} className="input" type="text" id="title" name="title" defaultValue={this.state.title}></input>
@@ -104,7 +104,6 @@ class EditBug extends Component {
                             <label className="label" htmlFor="createNewBug">Enter how to reproduce the bug (if data is bug)</label>
                             <input onChange={this.handleReproduceChange} className="input" type="text" id="title" name="description" defaultValue={this.state.reproduce}></input>
                             <label className="label" htmlFor="editBug">Assigned to Id</label>
-                            {/* <input onChange={this.handleAssignedToChange} className="input" type="text" id="title" name="assignedTo" defaultValue={this.state.assignedToId}></input> */}
                             <select onChange={this.handleAssignedToChange} className="select" id="assignedTo" name="assignedTo">
                                 {this.state.users.map(user => {
                                     return <option key={user._id} value={user.name}>{user.name}</option>

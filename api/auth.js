@@ -8,7 +8,7 @@ const auth = require('../middleware/auth');
 const User = require('../models/User');
 
 // @route POST api/auth
-// @desc  auth user
+// @desc  auth user on login
 // @access  public
 router.post('/', (req, res) => {
     const { email, password} = req.body;
@@ -47,6 +47,7 @@ router.post('/', (req, res) => {
     })
 })
 
+// check if the token is valid with the jwt secret
 router.post("/tokenIsValid", (req, res) => {
     try {
         const token = req.header("x-auth-token");
@@ -76,6 +77,7 @@ router.get('/user', auth, (req, res) => {
       .then(user => res.json(user));
 })
 
+// delete user
 router.delete("/delete", auth, (req, res) => {
     try {
         const deletedUser = User.findByIdAndDelete(req.user.id);

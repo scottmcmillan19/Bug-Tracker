@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Router, Route, Link, Switch, Redirect } from 'react-router-dom';
-import Bug from './Bug';
+import { Redirect } from 'react-router-dom';
+
 class BugPreview extends Component {
   state = {redirect: null}
   renderBug = () => {
     this.setState({redirect: true});
   }
   render() {
+    // go to the bug's page if clicked on
     if (this.state.redirect) {
       return <Redirect to={`/bug/${this.props._id}`} push={true}/>
     }
+    // different colors based on status
     if (this.props.status === "Open") {
       return (
         <div onClick={this.renderBug}>

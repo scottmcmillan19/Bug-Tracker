@@ -14,6 +14,7 @@ export default function Register() {
     const submit = (e) => {
         e.preventDefault();
         const newUser = { name, email, password, checkPassword };
+        // make new user and authenticate them
         axios.post('/api/users', newUser)
             .then(() => {
                 axios.post("/api/auth", {

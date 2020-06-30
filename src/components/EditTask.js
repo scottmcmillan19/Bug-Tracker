@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {FaTrashAlt} from "react-icons/fa";
 
 class EditTask extends Component {
@@ -13,7 +11,6 @@ class EditTask extends Component {
             .then(res => {
                 this.setState({ task: null, deleted: true })
             })
-
     }
 
     state = {
@@ -36,6 +33,7 @@ class EditTask extends Component {
             })
     }
 
+    // stores the new values of each field upon change for each edit fcn
     handleTitleChange = (event) => {
         var date = new Date();
         var currDate = date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear();
@@ -81,6 +79,7 @@ class EditTask extends Component {
             if (this.state.users != null) {
                 return (
                     <div>
+                        {/* form for editing a task */ }
                         <form onSubmit={this.handleSubmit} id="editBug">
                             <label className="label" htmlFor="editBug">Title</label>
                             <input onChange={this.handleTitleChange} className="input" type="text" id="title" name="title" defaultValue={this.state.title}></input>

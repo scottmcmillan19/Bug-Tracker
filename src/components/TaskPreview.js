@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Router, Route, Link, Switch, Redirect } from 'react-router-dom';
-import Bug from './Bug';
+import { Redirect } from 'react-router-dom';
+
 class TaskPreview extends Component {
   state = {redirect: null}
   renderTask = () => {
@@ -12,6 +11,7 @@ class TaskPreview extends Component {
       return <Redirect to={`/task/${this.props._id}`} push={true}/>
     }
     else {
+      // each status has its own color
       if (this.props.status === "Open") {
         return (
           <div onClick={this.renderTask}>

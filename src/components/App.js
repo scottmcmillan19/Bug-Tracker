@@ -14,7 +14,7 @@ import MyAssignedBugs from './MyAssignedBugs';
 import EditBug from './EditBug';
 import Created from './Created';
 import Deleted from './Deleted';
-import Updated from './Updated';
+import Updated from './UpdatedBug';
 import TaskList from './TaskList';
 import Task from './Task';
 import MyCreatedTasks from './MyCreatedTasks';
@@ -82,15 +82,18 @@ class App extends React.Component {
     return (
       <div>
         <UserContext.Provider value={{ userData, setUserData }}>
+          {/* navigation between pages */}
           <ul className="ul_navbar">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/createNewData">Create New Data</Link></li>
             <li><Link to="/bugs">Bugs</Link></li>
             <li><Link to="/tasks">Tasks</Link></li>
+            {/* if user is logged in, show logout only */}
             {userData.user ?
               (
                 <li><Link onClick={this.logout} to="/logout">Logout</Link></li>
               ) : (
+                // otherwise, show login and register
                 <>
                   <li><Link to="/register">Register</Link></li>
                   <li><Link to="/login">Login</Link></li>
@@ -98,6 +101,7 @@ class App extends React.Component {
               )
             }
           </ul>
+          {/* setting up all the routes */}
           <Route exact path="/" component={Home} />
           <Route exact path="/createNewData" render={(props) => <CreateNewData {...props} bugs={this.state.bugs} />} />
           <Route exact path="/bugs" render={(props) => <BugList {...props} bugs={this.state.bugs} first={true}/>} />

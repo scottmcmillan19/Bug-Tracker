@@ -1,29 +1,12 @@
 import React, { Component, useContext } from 'react';
-import PropTypes from 'prop-types';
-//import history from '../history';
 import axios from 'axios';
-import UserContext from '../context/UserContext';
 import {Link, Redirect } from 'react-router-dom';
-const pushState = (obj, url) =>
-    window.history.pushState(obj, '', url);
-
-const fetchBugList = () => {
-    pushState(
-        { bugId: null },
-        '/'
-    );
-    api.fetchBugList().then(bugs => {
-        this.setState({
-            bugId: null,
-            bugs
-        });
-    });
-};
 
 class CreateNewBug extends Component {
 
     constructor() {
         super();
+        // make it so you can access the functions with "this"
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -32,17 +15,19 @@ class CreateNewBug extends Component {
         this.handleStatusChange = this.handleStatusChange.bind(this);
         this.handleTypeChange = this.handleTypeChange.bind(this);
         this.handleReproduceChange = this.handleReproduceChange.bind(this);
-        //this.handleReporterChange = this.handleReporterChange.bind(this);
     }
 
+    // get list of users
     componentDidMount() {
         let token = localStorage.getItem("auth-token");
         axios.get('api/users', {headers: {"x-auth-token": token}})
             .then(res => {
-                this.setState({ type: 'Bug', title: 'hi', description: 'lol', assignedTo: 'Scott McMillan', priority: '1', status: 'Open', reporterId: 'lol', dateCreated: 'lol', users: res.data, reproduce: 'lol'  })
+                this.setState({ type: 'Bug', title: '', description: '', assignedTo: 'Scott McMillan', priority: '1', status: 'Open', reporterId: '', dateCreated: '', users: res.data, reproduce: ''  })
             })
     }
+
     state = {redirect: false};
+
     handleSubmit(event) {
         event.preventDefault();
         let token = localStorage.getItem("auth-token");
@@ -56,8 +41,8 @@ class CreateNewBug extends Component {
         }
     }
 
+    // stores the data in each field
     handleTitleChange(event) {
-        
         var currDate = Date.now();
         this.setState({ dateCreated:  currDate})
         this.setState({ title: event.target.value })
@@ -93,6 +78,7 @@ class CreateNewBug extends Component {
     }
 
     render() {
+
         let token = localStorage.getItem("auth-token");
         if (this.state.redirect) {
             return <Redirect to="/createNewData/created" push={true}/>
@@ -100,7 +86,7 @@ class CreateNewBug extends Component {
         if (this.props.bugs != null && this.state.users != null && token != '') {
             return (
                 <div>
-                    
+                    {/* form to enter each field */}
                     <form onSubmit={this.handleSubmit} id="createNewBug">
                         <label className="label" htmlFor="createNewBug">Choose type of data</label>
                         <select onChange={this.handleTypeChange} className="select" id="type" name="type">

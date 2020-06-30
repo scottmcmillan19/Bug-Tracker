@@ -1,6 +1,4 @@
 import React from 'react';
-import Bug from '../../models/Bug';
-import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import BugPreview from './BugPreview'
 import { Link } from 'react-router-dom';
@@ -8,6 +6,7 @@ class MyAssignedBugs extends React.Component {
     state = { bugs: null };
 
     componentDidMount() {
+        // get one's assigned bugs and sort by status
         let token = localStorage.getItem("auth-token");
         axios.get('/api/myAssignedBugs', { headers: { "x-auth-token": token } })
             .then(res => {
@@ -22,6 +21,7 @@ class MyAssignedBugs extends React.Component {
                 this.setState({ bugs: res.data })
             })
     }
+
     render() {
         let token = localStorage.getItem("auth-token");
         if (token != '' && this.state.bugs != null) {
@@ -29,7 +29,7 @@ class MyAssignedBugs extends React.Component {
                 <div>
                  <p><a style={{color: "#a2b6fd", display: "inline", marginLeft: "300px"}}>Blue</a> bugs are open bugs.<a style={{color: "#00cd38", display:"inline" }}> Green </a>
                  bugs are in progress bugs.<a style={{color: "red", display: "inline"}}> Red</a> bugs are finished bugs.  </p>
-
+                    {/* nav bar for different kinds of bugs */}
                     <ul className="bugKinds">
                         <li><Link to="/bugs/myCreatedBugs">My Created Bugs</Link></li>
                         <li><Link to="/bugs">All Bugs</Link></li>

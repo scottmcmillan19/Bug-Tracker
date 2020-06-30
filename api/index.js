@@ -1,7 +1,4 @@
-import { MongoClient, ObjectID } from 'mongodb';
 import express from 'express';
-import assert from 'assert';
-import bodyParser from 'body-parser';
 import Bug from '../models/Bug';
 import User from '../models/User';
 const auth = require('../middleware/auth');
@@ -17,6 +14,7 @@ router.get('/bugs', auth, (req, res) => {
   })
 });
 
+// get my created bugs
 router.get('/myCreatedBugs', auth, (req, res) => {
   let token = req.header("x-auth-token");
   let decoded = jwtDecode(token);
@@ -25,6 +23,7 @@ router.get('/myCreatedBugs', auth, (req, res) => {
   })
 })
 
+// get my assigned bugs
 router.get('/myAssignedBugs', auth, (req, res) => {
   let token = req.header("x-auth-token");
   let decoded = jwtDecode(token);
@@ -40,6 +39,7 @@ router.get('/bugs/:bugId', auth, (req, res) => {
   })
 });
 
+// create a new bug
 router.post('/bugs', auth, (req, res) => {
   let token = req.header("x-auth-token");
   let decoded = jwtDecode(token);
@@ -58,25 +58,28 @@ router.post('/bugs', auth, (req, res) => {
   })
 })
 
-router.post('/bugs/updateBug/:bugId', auth, (req, res) => {
+// when you start working on a bug, this changes the status
+router.post('/bugs/changeProgress/:bugId', auth, (req, res) => {
   Bug.findByIdAndUpdate(`${req.params.bugId}`, {status: "In Progress"}, (err, doc) => {
     res.send(doc)
   })
 })
 
+// on bug completion
 router.post('/bugs/finishBug/:bugId', auth, (req, res) => {
   Bug.findByIdAndUpdate(`${req.params.bugId}`, {status: "Closed"}, (err, doc) => {
     res.send(doc)
   })
 })
 
-
+// delete bug from db
 router.post('/bugs/delete/:bugId', auth, (req, res) => {
   Bug.findByIdAndDelete(`${req.params.bugId}`, (err, doc) => {
     res.send(doc);
   })
 })
 
+// edit bug on the edit menu
 router.post('/bugs/editBug/:bugId', auth, (req, res) => {
   var time = Date.now();
   Bug.findByIdAndUpdate(`${req.params.bugId}`, {title: req.body.title, description: req.body.description,
@@ -85,6 +88,7 @@ router.post('/bugs/editBug/:bugId', auth, (req, res) => {
   })
 })
 
+// edit bug not on the edit menu
 router.post('/bugs/editInPlace/:bugId', auth, (req, res) => {
   var time = Date.now();
   var status1 = req.body.bug.status;

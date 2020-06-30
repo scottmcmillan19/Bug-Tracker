@@ -1,13 +1,13 @@
 import React from 'react';
-import Bug from '../../models/Bug';
-import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import TaskPreview from './TaskPreview'
 import { Link } from 'react-router-dom';
+
 class MyAssignedTasks extends React.Component {
     state = { tasks: null };
 
     componentDidMount() {
+        // get one's assigned tasks and sort by status
         let token = localStorage.getItem("auth-token");
         axios.get('/api/tasks/myAssignedTasks', { headers: { "x-auth-token": token } })
             .then(res => {
@@ -29,7 +29,7 @@ class MyAssignedTasks extends React.Component {
                 <div>
                 <p><a style={{color: "#a2b6fd", display: "inline", marginLeft: "300px"}}>Blue</a> tasks are open tasks.<a style={{color: "#00cd38", display:"inline" }}> Green </a>
                 tasks are in progress tasks.<a style={{color: "red", display: "inline"}}> Red</a> tasks are finished tasks.  </p>
-
+                    {/* nav bar for different kinds of tasks */}
                     <ul className="bugKinds">
                         <li><Link to="/tasks/myCreatedTasks">My Created Tasks</Link></li>
                         <li><Link to="/tasks">All Tasks</Link></li>

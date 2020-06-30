@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { Redirect } from 'react-router-dom';
@@ -10,6 +9,7 @@ class Bug extends Component {
 
   constructor() {
     super();
+    // setting all the functions to be accessible with "this"
         this.editStatus = this.editStatus.bind(this);
         this.handleStatusChange = this.handleStatusChange.bind(this);
         this.editPriority = this.editPriority.bind(this);
@@ -26,6 +26,7 @@ class Bug extends Component {
     .then(window.location.reload(false))
   }
 
+  // if the user edits any of the fields
   editPriority = () => {
     this.setState({editPriority: true})
   }
@@ -51,6 +52,7 @@ class Bug extends Component {
     this.setState({redirect: true})
   }
 
+  // stores the new value of the fields
   handleStatusChange = (event) => {
     this.setState({newStatus: event.target.value})
   }
@@ -75,15 +77,14 @@ class Bug extends Component {
       })
   }
 
-
-
-
-  updateBug = () => {
+  // when start working on a bug, change status to "in progress"
+  changeProgress = () => {
     let token = localStorage.getItem("auth-token");
-    axios.post(`/api/bugs/updateBug/${this.state.bug._id}`, null, {headers: {"x-auth-token": token}} )
+    axios.post(`/api/bugs/changeProgress/${this.state.bug._id}`, null, {headers: {"x-auth-token": token}} )
     .then(window.location.reload(false))
   }
 
+  // on completing of bug, change status to "closed"
   finishBug = () => {
     let token = localStorage.getItem("auth-token");
     axios.post(`/api/bugs/finishBug/${this.state.bug._id}`, null, {headers: {"x-auth-token": token}})
@@ -93,6 +94,8 @@ class Bug extends Component {
   state = { bug: null, redirect: false, finished: false, assignedToName: null,
      createdByName: null, editStatus: false, newStatus: null, editPriority: false, newPriority: null, editReproduce: false,
     newReproduce: null, editDescription: false, newDescription: null, editAssignedTo: false, users: null, newAssignedToId: null }
+
+    // get the bug info and users
   componentDidMount() {
     let token = localStorage.getItem("auth-token");
     axios.get(`/api/bugs/${this.props.match.params.bugId}`, { headers: { "x-auth-token": token } })
@@ -112,22 +115,28 @@ class Bug extends Component {
           this.setState({users: res.data})
         })
   }
+
   render() {
+    // if editing bug
     if (this.state.redirect) {
       return <Redirect to={`/bug/edit/${this.state.bug._id}`} push={true}/>
     }
+
     if (this.state.finished) {
       return <Redirect to="/bugs/finished" push={true}/>
     }
+
+    // check if there is no bug
     if (this.state.bug != null) {
       let token = localStorage.getItem("auth-token");
       let decoded = jwtDecode(token);
         return (
           <div>
             <h3 className="bugTitle">{this.state.bug.title}</h3>
+            {/* only allowed to edit bug if you made it or are assigned to */}
             {decoded.id === this.state.bug.assignedToId && this.state.bug.status === 'Open' ? 
             <div className="homeParagraph"><br/><h3>Start working on this bug?</h3>
-            <button onClick={this.updateBug}className="yesNo">Start</button></div> : null}
+            <button onClick={this.changeProgress}className="yesNo">Start</button></div> : null}
             <br/>
             <div className="bug">
               <table className="bugTables">
@@ -144,23 +153,25 @@ class Bug extends Component {
                   <tr>
                     <th>Status:</th>
                     <td>
-                      {this.state.editStatus ?  <form onSubmit={this.handleSubmit} id="status"><select defaultValue={this.state.bug.status} onChange={this.handleStatusChange}><option>Open</option>
+                      {/* only allowed to edit if you made the bug or are assigned to it */}
+                      {this.state.editStatus && decoded.id === this.state.bug.assignedToId ? <form onSubmit={this.handleSubmit} id="status"><select defaultValue={this.state.bug.status} onChange={this.handleStatusChange}><option>Open</option>
                       <option>In Progress</option><option>Closed</option></select>  <button className="doneEditing" form="status" type="submit">Done</button></form>: 
                       this.state.bug.status}
+                      {/* symbol depends on the status */}
                       {this.state.bug.status === "In Progress" && !this.state.editStatus ? 
                       <IconContext.Provider value={{color: "#00c536"}}>&nbsp;&nbsp;<FaCircle/></IconContext.Provider> : null}
                       {this.state.bug.status === "Closed" && !this.state.editStatus ?
                         <IconContext.Provider value={{ color: "red" }}>&nbsp;&nbsp;<FaStop /></IconContext.Provider> : null}
                       {this.state.bug.status === "Open" && !this.state.editStatus ?
                         <IconContext.Provider value={{ color: "blue" }}>&nbsp;&nbsp;<FaPlay /></IconContext.Provider> : null}
-                        {this.state.editStatus ? null : <button  onClick={this.editStatus} className="editBtn"><FaEdit/></button>}
+                        {this.state.editStatus ? null : <button  onClick={this.editStatus} className="editBtn">{decoded.id === this.state.bug.assignedToId ? <FaEdit/> : null}</button>}
                       
                       </td>
                   </tr>
                   <tr>
                     <th>Priority:</th>
                     <td>
-                      {this.state.editPriority ? <form onSubmit={this.handleSubmit} id="priority">
+                      {this.state.editPriority && decoded.id === this.state.bug.assignedToId ? <form onSubmit={this.handleSubmit} id="priority">
                         <select onChange={this.handlePriorityChange} defaultValue={this.state.bug.priority}>
                           <option>1</option>
                           <option>2</option>
@@ -168,24 +179,24 @@ class Bug extends Component {
                           <option>4</option>
                           <option>5</option>
                         </select>&nbsp;&nbsp;<button className="doneEditing" form="priority" type="submit">Done</button></form> : this.state.bug.priority}
-                      {this.state.editPriority ? null : <button  onClick={this.editPriority} className="editBtn"><FaEdit/></button>}
+                      {this.state.editPriority ? null : <button  onClick={this.editPriority} className="editBtn">{decoded.id === this.state.bug.assignedToId ? <FaEdit/> : null}</button>}
                       </td>
                   </tr>
                   <tr>
                     <th>How to reproduce this bug:</th>
                     <td>
-                      {this.state.editReproduce ? <form onSubmit={this.handleSubmit} id="reproduce"><input onChange={this.handleReproduceChange} defaultValue={this.state.bug.reproduce}></input>
+                      {this.state.editReproduce && decoded.id === this.state.bug.assignedToId ? <form onSubmit={this.handleSubmit} id="reproduce"><input onChange={this.handleReproduceChange} defaultValue={this.state.bug.reproduce}></input>
                       &nbsp;&nbsp;<button className="doneEditing" form="reproduce" type="submit">Done</button></form> : this.state.bug.reproduce}
-                      {this.state.editReproduce ? null : <button onClick={this.editReproduce} className="editBtn"><FaEdit/></button>}
+                      {this.state.editReproduce ? null : <button onClick={this.editReproduce} className="editBtn">{decoded.id === this.state.bug.assignedToId ? <FaEdit/> : null}</button>}
                       </td>
                   </tr>
                   <tr>
                     <th>Description:</th>
                     <td>
-                      {this.state.editDescription ? <form onSubmit={this.handleSubmit} id="description"><input onChange={this.handleDescriptionChange} defaultValue={this.state.bug.description}></input>
+                      {this.state.editDescription && decoded.id === this.state.bug.assignedToId ? <form onSubmit={this.handleSubmit} id="description"><input onChange={this.handleDescriptionChange} defaultValue={this.state.bug.description}></input>
                       &nbsp;&nbsp;<button className="doneEditing" form="description" type="submit">Done</button>
                       </form> : this.state.bug.description}
-                      {this.state.editDescription ? null : <button onClick={this.editDescription} className="editBtn"><FaEdit/></button>}
+                      {this.state.editDescription ? null : <button onClick={this.editDescription} className="editBtn">{decoded.id === this.state.bug.assignedToId ? <FaEdit/> : null}</button>}
                       </td>
                   </tr>
                 </tbody>
@@ -200,13 +211,13 @@ class Bug extends Component {
                   <tr>
                     <th>Assigned to:</th>
                     <td>
-                      {this.state.editAssignedTo ? <form onSubmit={this.handleSubmit} id="assignedTo">
+                      {this.state.editAssignedTo && decoded.id === this.state.bug.assignedToId ? <form onSubmit={this.handleSubmit} id="assignedTo">
                         <select onChange={this.handleAssignedToChange} defaultValue={this.state.assignedToName}>
                           {this.state.users.map(user => {
                             return <option key={user._id}>{user.name}</option>
                           })}
                         </select><button className="doneEditing" form="assignedTo" type="submit">Done</button></form> : this.state.assignedToName}
-                      {this.state.editAssignedTo ? null : <button onClick={this.editAssignedTo} className="editBtn"><FaEdit/></button>}
+                      {this.state.editAssignedTo ? null : <button onClick={this.editAssignedTo} className="editBtn">{decoded.id === this.state.bug.assignedToId ? <FaEdit/> : null}</button>}
                       </td>
                   </tr>
                 </tbody>
@@ -225,26 +236,18 @@ class Bug extends Component {
                 </tbody>
               </table>
             </div>
+            {/* only allowed to edit if you created bug or are assigned to it */}
             {decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId ?
             <div><br/><button onClick={this.editBug} className="editButton">Edit Bug</button>
              </div> : null}
-             {this.state.bug.status === "In Progress" ? <button onClick={this.finishBug} className="finishButton">Complete Bug</button> : null}
-            
+             {this.state.bug.status === "In Progress" && decoded.id === this.state.bug.assignedToId ? <button onClick={this.finishBug} className="finishButton">Complete Bug</button> : null}
           </div>
         );
       }
-    
     else {
       return <div></div>
     }
   }
 }
-
-
-// Bug.propTypes = {
-//   _id: PropTypes.string.isRequired,
-//   description: PropTypes.string.isRequired,
-//   bugListClick: PropTypes.func.isRequired,
-// };
 
 export default Bug;

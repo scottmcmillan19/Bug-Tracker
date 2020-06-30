@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 export default function Logout() {
     const history = useHistory();
+    // set token to null on logout
     this.props.setUserData({
         token: undefined,
         user: undefined

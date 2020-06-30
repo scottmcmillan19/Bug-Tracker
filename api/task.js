@@ -1,4 +1,3 @@
-import { MongoClient, ObjectID } from 'mongodb';
 import express from 'express';
 import Task from '../models/Task';
 import User from '../models/User';
@@ -8,12 +7,14 @@ router.use(express.urlencoded({ extended: false }));
 router.use(express.json());
 import jwtDecode from 'jwt-decode';
 
+// get all tasks
 router.get('/', auth, (req, res) => {
     Task.find({}, (err, docs) => {
       res.send(docs)
     })
   });
 
+  // get my created tasks
   router.get('/myCreatedTasks', auth, (req, res) => {
     let token = req.header("x-auth-token");
     let decoded = jwtDecode(token);
@@ -22,6 +23,7 @@ router.get('/', auth, (req, res) => {
     })
   })
 
+  // get my assigned tasks
   router.get('/myAssignedTasks', auth, (req, res) => {
     let token = req.header("x-auth-token");
     let decoded = jwtDecode(token);
@@ -30,12 +32,14 @@ router.get('/', auth, (req, res) => {
     })
   })
 
+  // get specific task
   router.get('/:taskId', auth, (req, res) => {
     Task.findById(`${req.params.taskId}`, (err, doc) => {
       res.send(doc)
     })
   });
 
+  // create a new task
   router.post('/', auth, (req, res) => {
     let token = req.header("x-auth-token");
     let decoded = jwtDecode(token);
@@ -53,18 +57,21 @@ router.get('/', auth, (req, res) => {
     })
   })
 
-  router.post('/updateTask/:taskId', auth, (req, res) => {
+  // change status when starting new task
+  router.post('/changeTaskStatus/:taskId', auth, (req, res) => {
     Task.findByIdAndUpdate(`${req.params.taskId}`, {status: "In Progress"}, (err, doc) => {
       res.send(doc)
     })
   })
 
+  // delete task
   router.post('/delete/:taskId', auth, (req, res) => {
     Task.findByIdAndDelete(`${req.params.taskId}`, (err, doc) => {
       res.send(doc);
     })
   })
 
+  // edit task
   router.post('/editTask/:taskId', auth, (req, res) => {
     Task.findByIdAndUpdate(`${req.params.taskId}`, {title: req.body.title, description: req.body.description,
     assignedToId: req.body.assignedToId, priority: req.body.priority, reporterId: req.body.reporterId, status: req.body.status, dateCreated: req.body.dateCreated, dateModified: Date.now()}, (err, doc) => {
@@ -72,12 +79,14 @@ router.get('/', auth, (req, res) => {
     })
   })
 
+  // complete task
   router.post('/finishTask/:taskId', auth, (req, res) => {
     Task.findByIdAndUpdate(`${req.params.taskId}`, {status: "Closed"}, (err, doc) => {
       res.send(doc)
     })
   })
 
+  // edit task not on edit menu
   router.post('/editInPlace/:taskId', auth, (req, res) => {
     console.log(req.body)
     var time = Date.now();

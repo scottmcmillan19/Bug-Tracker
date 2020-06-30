@@ -62,17 +62,20 @@ router.post('/', (req, res) => {
       })
 })
 
+// get all users
 router.get('/', auth, (req, res) => {
     User.find({})
         .then(users => res.send(users))
-        .catch(console.log('cant find ittt'))
+        .catch(console.log(''))
 })
 
+// get specific user
 router.get('/:userId', auth, (req, res) => {
     User.find({_id: req.params.userId})
         .then(user => res.send(user))
 })
 
+// get specific user name
 router.get('/getId/:name', auth, (req, res) => {
     User.find({name: req.params.name})
         .then(user => res.send(user[0]._id))

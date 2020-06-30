@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link } from 'react-router-dom';
+
 class DeletedTask extends React.Component {
     render() {
         return (
