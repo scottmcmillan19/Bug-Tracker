@@ -16,7 +16,7 @@ export default function Register() {
         const newUser = { name, email, password, checkPassword };
         axios.post('/api/users', newUser)
             .then(() => {
-                axios.post("http://localhost:8080/api/auth", {
+                axios.post("/api/auth", {
                     email, password
                 })
                     .then((loginRes) => {
