@@ -84,6 +84,7 @@ class Task extends Component {
         axios.get(`/api/users/${this.state.task.assignedToId}`, { headers: { "x-auth-token": token } })
           .then(res => {
             this.setState({ assignedToName: res.data[0].name })
+            console.log(this.state.assignedToName)
           })
         axios.get(`/api/users/${this.state.task.reporterId}`, { headers: { "x-auth-token": token } })
           .then(res => {
@@ -132,7 +133,7 @@ class Task extends Component {
                   <tr>
                     <th>Status:</th>
                     <td>
-                    {this.state.editStatus && decoded.id === this.state.task.assignedToId ?  <form onSubmit={this.handleSubmit} id="status"><select defaultValue={this.state.task.status} onChange={this.handleStatusChange}><option>Open</option>
+                    {this.state.editStatus && (decoded.id === this.state.task.assignedToId || decoded.id === this.state.task.reporterId) ?  <form onSubmit={this.handleSubmit} id="status"><select defaultValue={this.state.task.status} onChange={this.handleStatusChange}><option>Open</option>
                       <option>In Progress</option><option>Closed</option></select>  <button className="doneEditing" form="status" type="submit">Done</button></form>: 
                       this.state.task.status}
                       {/* different icon depending on what status */}
@@ -142,14 +143,14 @@ class Task extends Component {
                         <IconContext.Provider value={{ color: "red" }}>&nbsp;&nbsp;<FaStop /></IconContext.Provider> : null}
                       {this.state.task.status === "Open" && !this.state.editStatus ?
                         <IconContext.Provider value={{ color: "blue" }}>&nbsp;&nbsp;<FaPlay /></IconContext.Provider> : null}
-                      {this.state.editStatus ? null : <button className="editBtn" onClick={this.editStatus} >{decoded.id === this.state.task.assignedToId ? <FaEdit/> : null}</button>}
+                      {this.state.editStatus ? null : <button className="editBtn" onClick={this.editStatus} >{decoded.id === this.state.task.assignedToId || decoded.id === this.state.task.reporterId ? <FaEdit/> : null}</button>}
                     </td>
 
                   </tr>
                   <tr>
                     <th>Priority:</th>
                     <td>
-                      {this.state.editPriority && decoded.id === this.state.task.assignedToId ? <form onSubmit={this.handleSubmit} id="priority"><select defaultValue={this.state.task.priority} onChange={this.handlePriorityChange}>
+                      {this.state.editPriority && (decoded.id === this.state.task.assignedToId || decoded.id === this.state.task.reporterId) ? <form onSubmit={this.handleSubmit} id="priority"><select defaultValue={this.state.task.priority} onChange={this.handlePriorityChange}>
                       <option>1</option>
                       <option>2</option>
                       <option>3</option>
@@ -157,16 +158,16 @@ class Task extends Component {
                       <option>5</option>
                       </select>  <button className="doneEditing" form="priority" type="submit">Done</button></form>: 
                       this.state.task.priority}
-                      {this.state.editPriority ? null : <button className="editBtn" onClick={this.editPriority} >{decoded.id === this.state.task.assignedToId ? <FaEdit/> : null}</button>}
+                      {this.state.editPriority ? null : <button className="editBtn" onClick={this.editPriority} >{decoded.id === this.state.task.assignedToId || decoded.id === this.state.task.reporterId ? <FaEdit/> : null}</button>}
                       </td>
                   </tr>
                   <tr>
                     <th>Description:</th>
                     <td>
-                      {this.state.editDescription && decoded.id === this.state.task.assignedToId ? <form onSubmit={this.handleSubmit} id="description"><input onChange={this.handleDescriptionChange} defaultValue={this.state.task.description}></input>
+                      {this.state.editDescription && (decoded.id === this.state.task.assignedToId || decoded.id === this.state.task.reporterId) ? <form onSubmit={this.handleSubmit} id="description"><input onChange={this.handleDescriptionChange} defaultValue={this.state.task.description}></input>
                       &nbsp;&nbsp;<button className="doneEditing" form="description" type="submit">Done</button>
                       </form> : this.state.task.description}
-                      {this.state.editDescription ? null : <button className="editBtn" onClick={this.editDescription} >{decoded.id === this.state.task.assignedToId ? <FaEdit/> : null}</button>}
+                      {this.state.editDescription ? null : <button className="editBtn" onClick={this.editDescription} >{decoded.id === this.state.task.assignedToId || decoded.id === this.state.task.reporterId ? <FaEdit/> : null}</button>}
                       </td>
                   </tr>
                 </tbody>
@@ -181,14 +182,14 @@ class Task extends Component {
                   <tr>
                     <th>Assigned to:</th>
                     <td>
-                    {this.state.editAssignedTo && decoded.id === this.state.task.assignedToId ? <form onSubmit={this.handleSubmit} id="assignedTo">
+                    {this.state.editAssignedTo && (decoded.id === this.state.task.assignedToId || decoded.id === this.state.task.reporterId) ? <form onSubmit={this.handleSubmit} id="assignedTo">
                         <select onChange={this.handleAssignedToChange} defaultValue={this.state.assignedToName}>
                           {this.state.users.map(user => {
                             return <option key={user._id}>{user.name}</option>
                           })}
                         </select><button className="doneEditing" form="assignedTo" type="submit">Done</button></form> : this.state.assignedToName}
                       
-                      {this.state.editAssignedTo ? null : <button onClick={this.editAssignedTo} className="editBtn">{decoded.id === this.state.task.assignedToId ? <FaEdit/> : null}</button>}
+                      {this.state.editAssignedTo ? null : <button onClick={this.editAssignedTo} className="editBtn">{decoded.id === this.state.task.assignedToId || decoded.id === this.state.task.reporterId ? <FaEdit/> : null}</button>}
 
                       </td>
                   </tr>
@@ -211,7 +212,7 @@ class Task extends Component {
             {/* only allowed to edit or complete task if you made the task or are assigned it */}
             {decoded.id === this.state.task.assignedToId || decoded.id === this.state.task.reporterId ?
               <div><br /><button onClick={this.editTask} className="editButton">Edit Task</button></div> : null}
-            {this.state.task.status === "In Progress" && decoded.id === this.state.task.assignedToId ? <button onClick={this.finishTask} className="finishButton">Complete Task</button> : null}
+            {this.state.task.status === "In Progress" && (decoded.id === this.state.task.assignedToId || decoded.id === this.state.task.reporterId) ? <button onClick={this.finishTask} className="finishButton">Complete Task</button> : null}
           </div>
         </div>
       );

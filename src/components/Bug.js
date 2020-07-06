@@ -154,7 +154,7 @@ class Bug extends Component {
                     <th>Status:</th>
                     <td>
                       {/* only allowed to edit if you made the bug or are assigned to it */}
-                      {this.state.editStatus && decoded.id === this.state.bug.assignedToId ? <form onSubmit={this.handleSubmit} id="status"><select defaultValue={this.state.bug.status} onChange={this.handleStatusChange}><option>Open</option>
+                      {this.state.editStatus && (decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId) ? <form onSubmit={this.handleSubmit} id="status"><select defaultValue={this.state.bug.status} onChange={this.handleStatusChange}><option>Open</option>
                       <option>In Progress</option><option>Closed</option></select>  <button className="doneEditing" form="status" type="submit">Done</button></form>: 
                       this.state.bug.status}
                       {/* symbol depends on the status */}
@@ -164,14 +164,14 @@ class Bug extends Component {
                         <IconContext.Provider value={{ color: "red" }}>&nbsp;&nbsp;<FaStop /></IconContext.Provider> : null}
                       {this.state.bug.status === "Open" && !this.state.editStatus ?
                         <IconContext.Provider value={{ color: "blue" }}>&nbsp;&nbsp;<FaPlay /></IconContext.Provider> : null}
-                        {this.state.editStatus ? null : <button  onClick={this.editStatus} className="editBtn">{decoded.id === this.state.bug.assignedToId ? <FaEdit/> : null}</button>}
+                        {this.state.editStatus ? null : <button  onClick={this.editStatus} className="editBtn">{decoded.id === this.state.bug.assignedToId  || decoded.id === this.state.bug.reporterId ? <FaEdit/> : null}</button>}
                       
                       </td>
                   </tr>
                   <tr>
                     <th>Priority:</th>
                     <td>
-                      {this.state.editPriority && decoded.id === this.state.bug.assignedToId ? <form onSubmit={this.handleSubmit} id="priority">
+                      {this.state.editPriority && (decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId) ? <form onSubmit={this.handleSubmit} id="priority">
                         <select onChange={this.handlePriorityChange} defaultValue={this.state.bug.priority}>
                           <option>1</option>
                           <option>2</option>
@@ -179,24 +179,24 @@ class Bug extends Component {
                           <option>4</option>
                           <option>5</option>
                         </select>&nbsp;&nbsp;<button className="doneEditing" form="priority" type="submit">Done</button></form> : this.state.bug.priority}
-                      {this.state.editPriority ? null : <button  onClick={this.editPriority} className="editBtn">{decoded.id === this.state.bug.assignedToId ? <FaEdit/> : null}</button>}
+                      {this.state.editPriority ? null : <button  onClick={this.editPriority} className="editBtn">{decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId ? <FaEdit/> : null}</button>}
                       </td>
                   </tr>
                   <tr>
                     <th>How to reproduce this bug:</th>
                     <td>
-                      {this.state.editReproduce && decoded.id === this.state.bug.assignedToId ? <form onSubmit={this.handleSubmit} id="reproduce"><input onChange={this.handleReproduceChange} defaultValue={this.state.bug.reproduce}></input>
+                      {this.state.editReproduce && (decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId) ? <form onSubmit={this.handleSubmit} id="reproduce"><input onChange={this.handleReproduceChange} defaultValue={this.state.bug.reproduce}></input>
                       &nbsp;&nbsp;<button className="doneEditing" form="reproduce" type="submit">Done</button></form> : this.state.bug.reproduce}
-                      {this.state.editReproduce ? null : <button onClick={this.editReproduce} className="editBtn">{decoded.id === this.state.bug.assignedToId ? <FaEdit/> : null}</button>}
+                      {this.state.editReproduce ? null : <button onClick={this.editReproduce} className="editBtn">{decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId ? <FaEdit/> : null}</button>}
                       </td>
                   </tr>
                   <tr>
                     <th>Description:</th>
                     <td>
-                      {this.state.editDescription && decoded.id === this.state.bug.assignedToId ? <form onSubmit={this.handleSubmit} id="description"><input onChange={this.handleDescriptionChange} defaultValue={this.state.bug.description}></input>
+                      {this.state.editDescription && (decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId) ? <form onSubmit={this.handleSubmit} id="description"><input onChange={this.handleDescriptionChange} defaultValue={this.state.bug.description}></input>
                       &nbsp;&nbsp;<button className="doneEditing" form="description" type="submit">Done</button>
                       </form> : this.state.bug.description}
-                      {this.state.editDescription ? null : <button onClick={this.editDescription} className="editBtn">{decoded.id === this.state.bug.assignedToId ? <FaEdit/> : null}</button>}
+                      {this.state.editDescription ? null : <button onClick={this.editDescription} className="editBtn">{decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId ? <FaEdit/> : null}</button>}
                       </td>
                   </tr>
                 </tbody>
@@ -211,13 +211,13 @@ class Bug extends Component {
                   <tr>
                     <th>Assigned to:</th>
                     <td>
-                      {this.state.editAssignedTo && decoded.id === this.state.bug.assignedToId ? <form onSubmit={this.handleSubmit} id="assignedTo">
+                      {this.state.editAssignedTo && (decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId) ? <form onSubmit={this.handleSubmit} id="assignedTo">
                         <select onChange={this.handleAssignedToChange} defaultValue={this.state.assignedToName}>
                           {this.state.users.map(user => {
                             return <option key={user._id}>{user.name}</option>
                           })}
                         </select><button className="doneEditing" form="assignedTo" type="submit">Done</button></form> : this.state.assignedToName}
-                      {this.state.editAssignedTo ? null : <button onClick={this.editAssignedTo} className="editBtn">{decoded.id === this.state.bug.assignedToId ? <FaEdit/> : null}</button>}
+                      {this.state.editAssignedTo ? null : <button onClick={this.editAssignedTo} className="editBtn">{decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId ? <FaEdit/> : null}</button>}
                       </td>
                   </tr>
                 </tbody>
@@ -240,7 +240,7 @@ class Bug extends Component {
             {decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId ?
             <div><br/><button onClick={this.editBug} className="editButton">Edit Bug</button>
              </div> : null}
-             {this.state.bug.status === "In Progress" && decoded.id === this.state.bug.assignedToId ? <button onClick={this.finishBug} className="finishButton">Complete Bug</button> : null}
+             {this.state.bug.status === "In Progress" && (decoded.id === this.state.bug.assignedToId || decoded.id === this.state.bug.reporterId) ? <button onClick={this.finishBug} className="finishButton">Complete Bug</button> : null}
           </div>
         );
       }

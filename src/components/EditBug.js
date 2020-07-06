@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import {FaTrashAlt} from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 
 class EditBug extends Component {
 
@@ -39,8 +39,12 @@ class EditBug extends Component {
                     title: res.data.title, description: res.data.description, assignedToId: res.data.assignedToId,
                     priority: res.data.priority, reporterId: res.data.reporterId, status: res.data.status, dateCreated: res.data.dateCreated, id: res.data._id, reproduce: res.data.reproduce
                 });
+                axios.get(`/api/users/${this.state.assignedToId}`, { headers: { "x-auth-token": token } })
+                    .then(res => {
+                        this.setState({ assignedToName: res.data[0].name })
+                    })
             })
-        axios.get('/api/users', {headers: {"x-auth-token": token}})
+        axios.get('/api/users', { headers: { "x-auth-token": token } })
             .then(res => {
                 this.setState({ users: res.data })
             })
@@ -72,7 +76,11 @@ class EditBug extends Component {
     }
 
     handleAssignedToChange = (event) => {
-        this.setState({ assignedTo: event.target.value })
+        this.state.users.map(user => {
+            if (user.name === event.target.value) {
+                this.setState({assignedToId: user._id})
+            }
+        })
     }
 
     handlePriorityChange = (event) => {
@@ -106,7 +114,7 @@ class EditBug extends Component {
                             <label className="label" htmlFor="editBug">Assigned to Id</label>
                             <select onChange={this.handleAssignedToChange} className="select" id="assignedTo" name="assignedTo">
                                 {this.state.users.map(user => {
-                                    return <option key={user._id} value={user.name}>{user.name}</option>
+                                    return {...this.state.assignedToName === user.name ? <option key={user._id} value={user.name} selected>{user.name}</option> : <option key={user._id} value={user.name}>{user.name}</option>}
                                 })}
                             </select>
                             <label className="label" htmlFor="editBug">Priority</label>
@@ -125,7 +133,7 @@ class EditBug extends Component {
                             </select>
                             <button form="editBug" type="submit" className="button">Update Bug</button>
                         </form>
-                        <br /><button onClick={this.deleteBug} className="editButton">Delete Bug <FaTrashAlt/></button>
+                        <br /><button onClick={this.deleteBug} className="editButton">Delete Bug <FaTrashAlt /></button>
                     </div>
                 )
             }

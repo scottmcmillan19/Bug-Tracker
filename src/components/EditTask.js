@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import {FaTrashAlt} from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 
 class EditTask extends Component {
 
@@ -26,11 +26,16 @@ class EditTask extends Component {
                     title: res.data.title, description: res.data.description, assignedToId: res.data.assignedToId,
                     priority: res.data.priority, reporterId: res.data.reporterId, status: res.data.status, dateCreated: res.data.dateCreated, id: res.data._id
                 });
+                axios.get(`/api/users/${this.state.assignedToId}`, { headers: { "x-auth-token": token } })
+                    .then(res => {
+                        this.setState({ assignedToName: res.data[0].name })
+                    })
             })
-        axios.get('/api/users', {headers: {"x-auth-token": token}})
+        axios.get('/api/users', { headers: { "x-auth-token": token } })
             .then(res => {
                 this.setState({ users: res.data })
             })
+
     }
 
     // stores the new values of each field upon change for each edit fcn
@@ -56,7 +61,11 @@ class EditTask extends Component {
     }
 
     handleAssignedToChange = (event) => {
-        this.setState({ assignedTo: event.target.value })
+        this.state.users.map(user => {
+            if (event.target.value === user.name) {
+                this.setState({ assignedToId: user._id })
+            }
+        })
     }
 
     handlePriorityChange = (event) => {
@@ -79,7 +88,7 @@ class EditTask extends Component {
             if (this.state.users != null) {
                 return (
                     <div>
-                        {/* form for editing a task */ }
+                        {/* form for editing a task */}
                         <form onSubmit={this.handleSubmit} id="editBug">
                             <label className="label" htmlFor="editBug">Title</label>
                             <input onChange={this.handleTitleChange} className="input" type="text" id="title" name="title" defaultValue={this.state.title}></input>
@@ -88,7 +97,7 @@ class EditTask extends Component {
                             <label className="label" htmlFor="editBug">Assigned to Id</label>
                             <select onChange={this.handleAssignedToChange} className="select" id="assignedTo" name="assignedTo">
                                 {this.state.users.map(user => {
-                                    return <option key={user._id} value={user.name}>{user.name}</option>
+                                    return {...this.state.assignedToName === user.name ? <option key={user._id} value={user.name} selected>{user.name}</option> : <option key={user._id} value={user.name}>{user.name}</option>}
                                 })}
                             </select>
                             <label className="label" htmlFor="editBug">Priority</label>
@@ -107,7 +116,7 @@ class EditTask extends Component {
                             </select>
                             <button form="editBug" type="submit" className="button">Update Task</button>
                         </form>
-                        <br /><button onClick={this.deleteTask} className="editButton">Delete Task <FaTrashAlt/></button>
+                        <br /><button onClick={this.deleteTask} className="editButton">Delete Task <FaTrashAlt /></button>
                     </div>
                 )
             }
